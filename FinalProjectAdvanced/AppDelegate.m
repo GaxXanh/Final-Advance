@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "AdvancedFinal-PrefixHeader.pch"
 
 @interface AppDelegate ()
 

@@ -1,0 +1,16 @@
+//
+//  AdvancedFinal-PrefixHeader.pch
+//  AdvancedFinal
+//
+//  Created by Pham Anh on 4/8/16.
+//  Copyright © 2016 com.gaxxanh.iosFinalProject. All rights reserved.
+//
+
+#ifndef AdvancedFinal_PrefixHeader_pch
+#define AdvancedFinal_PrefixHeader_pch
+
+#import <AVFoundation/AVFoundation.h>
+#import "Constant.h"
+#import "LibraryAPI.h"
+
+#endif /* AdvancedFinal_PrefixHeader_pch */
