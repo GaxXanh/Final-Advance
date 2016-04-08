@@ -16,7 +16,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		32DFC7E71CB75A7800354834 /* FinalProjectAdvanced.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FinalProjectAdvanced.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		32DFC7E71CB75A7800354834 /* AdvancedFinal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AdvancedFinal.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		32DFC7EB1CB75A7800354834 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32DFC7ED1CB75A7800354834 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		32DFC7EE1CB75A7800354834 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -50,7 +50,7 @@
 		32DFC7E81CB75A7800354834 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				32DFC7E71CB75A7800354834 /* FinalProjectAdvanced.app */,
+				32DFC7E71CB75A7800354834 /* AdvancedFinal.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -82,9 +82,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		32DFC7E61CB75A7800354834 /* FinalProjectAdvanced */ = {
+		32DFC7E61CB75A7800354834 /* AdvancedFinal */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 32DFC7FE1CB75A7800354834 /* Build configuration list for PBXNativeTarget "FinalProjectAdvanced" */;
+			buildConfigurationList = 32DFC7FE1CB75A7800354834 /* Build configuration list for PBXNativeTarget "AdvancedFinal" */;
 			buildPhases = (
 				32DFC7E31CB75A7800354834 /* Sources */,
 				32DFC7E41CB75A7800354834 /* Frameworks */,
@@ -94,9 +94,9 @@
 			);
 			dependencies = (
 			);
-			name = FinalProjectAdvanced;
+			name = AdvancedFinal;
 			productName = FinalProjectAdvanced;
-			productReference = 32DFC7E71CB75A7800354834 /* FinalProjectAdvanced.app */;
+			productReference = 32DFC7E71CB75A7800354834 /* AdvancedFinal.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -114,7 +114,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 32DFC7E21CB75A7800354834 /* Build configuration list for PBXProject "FinalProjectAdvanced" */;
+			buildConfigurationList = 32DFC7E21CB75A7800354834 /* Build configuration list for PBXProject "AdvancedFinal" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -127,7 +127,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				32DFC7E61CB75A7800354834 /* FinalProjectAdvanced */,
+				32DFC7E61CB75A7800354834 /* AdvancedFinal */,
 			);
 		};
 /* End PBXProject section */
@@ -215,7 +215,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -253,7 +253,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -266,8 +266,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = FinalProjectAdvanced/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.GaxXanh.iosFinalProject.FinalProjectAdvanced;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = MusicPlayer;
+				PRODUCT_NAME = AdvancedFinal;
 			};
 			name = Debug;
 		};
@@ -277,15 +277,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = FinalProjectAdvanced/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.GaxXanh.iosFinalProject.FinalProjectAdvanced;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = MusicPlayer;
+				PRODUCT_NAME = AdvancedFinal;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		32DFC7E21CB75A7800354834 /* Build configuration list for PBXProject "FinalProjectAdvanced" */ = {
+		32DFC7E21CB75A7800354834 /* Build configuration list for PBXProject "AdvancedFinal" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				32DFC7FC1CB75A7800354834 /* Debug */,
@@ -294,7 +294,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		32DFC7FE1CB75A7800354834 /* Build configuration list for PBXNativeTarget "FinalProjectAdvanced" */ = {
+		32DFC7FE1CB75A7800354834 /* Build configuration list for PBXNativeTarget "AdvancedFinal" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				32DFC7FF1CB75A7800354834 /* Debug */,
