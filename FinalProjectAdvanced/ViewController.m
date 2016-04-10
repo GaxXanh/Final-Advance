@@ -9,10 +9,12 @@
 #import "ViewController.h"
 #import "AdvancedFinal-PrefixHeader.pch"
 
-@interface ViewController () <AVAudioPlayerDelegate>
+@interface ViewController () <AVAudioPlayerDelegate, UITableViewDelegate, UITableViewDataSource> {
+    NSArray *listSong;
+}
 
 @property (weak, nonatomic) IBOutlet UISlider *sliderTimer;
-@property (nonatomic, strong) AVAudioPlayer *audioPlayer;
+@property (weak, nonatomic) IBOutlet UITableView *tblSong;
 
 @end
 
@@ -24,34 +26,13 @@
     
     [self initForTheFirstTime];
     
-//    dispatch_queue_t dispatchQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-//
-//    dispatch_async(dispatchQueue, ^{
-//        
-//        NSString *filePath = [[sLibraryAPI documentFolderPath] stringByAppendingPathComponent:@"01 Lonely.mp3"];
-//        NSData *fileData = [NSData dataWithContentsOfFile:filePath];
-//        NSError *error = nil;
-//        
-//        self.audioPlayer = [[AVAudioPlayer alloc] initWithData:fileData
-//                                                         error:&error];
-//        
-//        if (self.audioPlayer != nil) {
-//            self.audioPlayer.delegate = self;
-//            if ([self.audioPlayer prepareToPlay] && [self.audioPlayer play]) {
-//                NSLog(@"Successfully player");
-//            } else {
-//                NSLog(@"Failed");
-//            }
-//        }
-//        
-//        // Start audio
-//        
-//    });
 }
 
 - (void) initForTheFirstTime
 {
-    self.audioPlayer = [[AVAudioPlayer alloc] init];
+    listSong = [[NSArray alloc] initWithArray:[sLibraryAPI getListMusic]];
+    [sPlayMusic setListSong:listSong];
+//    [sPlayMusic setDelegateForAVAudioPlayer:self];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -65,7 +46,50 @@
 - (IBAction)forward:(id)sender {
 }
 
+//- (CGFloat) getAudioDuration {
+////    return [self.audioPlayer duration];
+//}
+
 #pragma mark - AVAudioPlayer Delegate
+
+#pragma mark - TableView Delegate
+
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([tableView isEqual:self.tblSong]) {
+        [sPlayMusic playSongAtIndex:indexPath.row];
+    }
+}
+
+#pragma mark - TableView Datasource
+
+- (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    if ([tableView isEqual:self.tblSong]) {
+        if (section == 0) {
+            return [listSong count];
+        }
+    }
+    
+    return 0;
+}
+
+- (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([tableView isEqual:self.tblSong]) {
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellSong forIndexPath:indexPath];
+        if (cell == nil) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
+                                          reuseIdentifier:cellSong];
+        }
+        
+        cell.textLabel.text = [[listSong objectAtIndex:indexPath.row] getName];
+        
+        return cell;
+    }
+    
+    return nil;
+}
 
 
 @end

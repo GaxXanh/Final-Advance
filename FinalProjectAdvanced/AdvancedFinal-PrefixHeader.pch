@@ -12,5 +12,8 @@
 #import <AVFoundation/AVFoundation.h>
 #import "Constant.h"
 #import "LibraryAPI.h"
+#import "Song.h"
+#import "PlayMusic.h"
+#import <UIKit/UIKit.h>
 
 #endif /* AdvancedFinal_PrefixHeader_pch */

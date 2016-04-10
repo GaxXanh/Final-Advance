@@ -11,5 +11,6 @@
 @interface LibraryAPI : NSObject
 
 + (LibraryAPI *) sharedInstance;
+- (NSArray *)getListMusic;
 
 @end

@@ -7,6 +7,8 @@
 //
 
 #import "LibraryAPI.h"
+#import "AdvancedFinal-PrefixHeader.pch"
+#import "Song.h"
 
 @interface LibraryAPI () {
     NSFileManager *fileManager;
@@ -31,7 +33,6 @@
     self = [super init];
     if (self) {
         fileManager = [NSFileManager defaultManager];
-        
     }
     return self;
 }
@@ -49,7 +50,20 @@
 
 - (NSArray *)getListMusic
 {
-    return nil;
+    NSString *documentFolderPath = [self documentFolderPath];
+    NSArray *dirArray;
+    dirArray = [fileManager contentsOfDirectoryAtPath:documentFolderPath error:nil];
+    
+    NSMutableArray<Song *> *listSong = [[NSMutableArray alloc] init];
+    for (NSString *songItem in dirArray) {
+        NSString *filePath = [documentFolderPath stringByAppendingPathComponent:songItem];
+        if (filePath != nil) {
+            Song *songItem = [[Song alloc] initWithFilePath:filePath];
+            [listSong addObject:songItem];
+        }
+    }
+    
+    return [NSArray arrayWithArray:listSong];
 }
 
 @end

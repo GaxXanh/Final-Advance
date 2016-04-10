@@ -10,5 +10,7 @@
 #define Constant_h
 
 #define sLibraryAPI [LibraryAPI sharedInstance]
+#define sPlayMusic [PlayMusic sharedInstance]
+#define cellSong @"cellSong"
 
 #endif /* Constant_h */

@@ -16,6 +16,8 @@
 		32DFC8041CB7622F00354834 /* LibraryAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DFC8031CB7622F00354834 /* LibraryAPI.m */; };
 		32DFC80F1CB76B3800354834 /* rewind_filled.png in Resources */ = {isa = PBXBuildFile; fileRef = 32DFC80E1CB76B3800354834 /* rewind_filled.png */; };
 		32DFC8111CB76B4400354834 /* fast_forward_filled.png in Resources */ = {isa = PBXBuildFile; fileRef = 32DFC8101CB76B4400354834 /* fast_forward_filled.png */; };
+		32DFC81A1CB7907C00354834 /* Song.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DFC8191CB7907C00354834 /* Song.m */; };
+		32DFC8241CB79E6500354834 /* PlayMusic.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DFC8231CB79E6500354834 /* PlayMusic.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +37,10 @@
 		32DFC80C1CB766EF00354834 /* AdvancedFinal-PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AdvancedFinal-PrefixHeader.pch"; sourceTree = "<group>"; };
 		32DFC80E1CB76B3800354834 /* rewind_filled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rewind_filled.png; sourceTree = "<group>"; };
 		32DFC8101CB76B4400354834 /* fast_forward_filled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fast_forward_filled.png; sourceTree = "<group>"; };
+		32DFC8181CB7907C00354834 /* Song.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Song.h; sourceTree = "<group>"; };
+		32DFC8191CB7907C00354834 /* Song.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Song.m; sourceTree = "<group>"; };
+		32DFC8221CB79E6500354834 /* PlayMusic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayMusic.h; sourceTree = "<group>"; };
+		32DFC8231CB79E6500354834 /* PlayMusic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayMusic.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +59,7 @@
 			children = (
 				32DFC7E91CB75A7800354834 /* FinalProjectAdvanced */,
 				32DFC7E81CB75A7800354834 /* Products */,
+				32DFC8121CB787B100354834 /* Framework */,
 			);
 			sourceTree = "<group>";
 		};
@@ -67,11 +74,11 @@
 		32DFC7E91CB75A7800354834 /* FinalProjectAdvanced */ = {
 			isa = PBXGroup;
 			children = (
-				32DFC8011CB761FB00354834 /* API */,
 				32DFC7ED1CB75A7800354834 /* AppDelegate.h */,
 				32DFC7EE1CB75A7800354834 /* AppDelegate.m */,
-				32DFC7F01CB75A7800354834 /* ViewController.h */,
-				32DFC7F11CB75A7800354834 /* ViewController.m */,
+				32DFC81C1CB79D0400354834 /* ViewController */,
+				32DFC8171CB7906E00354834 /* Model */,
+				32DFC8011CB761FB00354834 /* API */,
 				32DFC80B1CB766B000354834 /* Constant.h */,
 				32DFC7F31CB75A7800354834 /* Main.storyboard */,
 				32DFC7F61CB75A7800354834 /* Assets.xcassets */,
@@ -97,6 +104,8 @@
 			children = (
 				32DFC8021CB7622F00354834 /* LibraryAPI.h */,
 				32DFC8031CB7622F00354834 /* LibraryAPI.m */,
+				32DFC8221CB79E6500354834 /* PlayMusic.h */,
+				32DFC8231CB79E6500354834 /* PlayMusic.m */,
 			);
 			name = API;
 			sourceTree = "<group>";
@@ -108,6 +117,32 @@
 				32DFC8101CB76B4400354834 /* fast_forward_filled.png */,
 			);
 			name = Image;
+			sourceTree = "<group>";
+		};
+		32DFC8121CB787B100354834 /* Framework */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Framework;
+			path = FinalProjectAdvanced;
+			sourceTree = "<group>";
+		};
+		32DFC8171CB7906E00354834 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				32DFC8181CB7907C00354834 /* Song.h */,
+				32DFC8191CB7907C00354834 /* Song.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		32DFC81C1CB79D0400354834 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				32DFC7F01CB75A7800354834 /* ViewController.h */,
+				32DFC7F11CB75A7800354834 /* ViewController.m */,
+			);
+			name = ViewController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -183,6 +218,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				32DFC81A1CB7907C00354834 /* Song.m in Sources */,
+				32DFC8241CB79E6500354834 /* PlayMusic.m in Sources */,
 				32DFC7F21CB75A7800354834 /* ViewController.m in Sources */,
 				32DFC7EF1CB75A7800354834 /* AppDelegate.m in Sources */,
 				32DFC8041CB7622F00354834 /* LibraryAPI.m in Sources */,
