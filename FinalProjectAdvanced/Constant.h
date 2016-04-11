@@ -10,7 +10,10 @@
 #define Constant_h
 
 #define sLibraryAPI [LibraryAPI sharedInstance]
-#define sPlayMusic [PlayMusic sharedInstance]
+#define sPlayManagerMusic [PlayManagerMusic sharedInstance]
+#define sApplication [UIApplication sharedApplication]
 #define cellSong @"cellSong"
+
+#define kDurationAnimateGoUp 0.5f
 
 #endif /* Constant_h */

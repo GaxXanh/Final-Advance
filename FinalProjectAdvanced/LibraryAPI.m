@@ -63,7 +63,11 @@
         }
     }
     
-    return [NSArray arrayWithArray:listSong];
+    NSArray *arraySong = [NSArray arrayWithArray:listSong];
+    
+    [sPlayManagerMusic setListSong:arraySong];
+    
+    return [NSArray arrayWithArray:arraySong];
 }
 
 @end

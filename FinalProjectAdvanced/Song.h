@@ -12,8 +12,8 @@
 
 - (id) initWithFilePath:(NSString *)filePath;
 - (NSString *)getName;
-- (NSString *)getExtensionPath;
-- (float)getDuration;
 - (NSString *)getFilePath;
+- (NSString *)getArtist;
+- (NSString *)getDurationString;
 
 @end

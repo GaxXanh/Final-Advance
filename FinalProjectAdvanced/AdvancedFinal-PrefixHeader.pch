@@ -13,7 +13,7 @@
 #import "Constant.h"
 #import "LibraryAPI.h"
 #import "Song.h"
-#import "PlayMusic.h"
+#import "PlayManagerMusic.h"
 #import <UIKit/UIKit.h>
 
 #endif /* AdvancedFinal_PrefixHeader_pch */
