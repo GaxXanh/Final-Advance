@@ -11,6 +11,8 @@
 #import "PlayViewController.h"
 #import "AppDelegate.h"
 
+#define kStartAngle -M_PI_2
+
 typedef enum {
     
     PLAYER_STATE_HIDDEN = 0,
@@ -19,9 +21,10 @@ typedef enum {
 } PLAYER_STATE;
 
 @interface ViewController () <UITableViewDelegate, UITableViewDataSource, PlayManagerMusicDelegate> {
-    NSArray *listSong;
-    NSInteger _nowIndex;
-    NSInteger _oldIndex;
+    NSArray *_listSong;
+    NSTimer *_timer;
+    UIView *_progressView;
+    AVAudioPlayer *_player;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tblSong;
@@ -31,6 +34,24 @@ typedef enum {
 @end
 
 @implementation ViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view, typically from a nib.
+    
+    [sPlayManagerMusic addDelegate:self];
+    _listSong = [sPlayManagerMusic reloadListSong];
+    
+    self.playerState = PLAYER_STATE_HIDDEN;
+    self.playerVC = [self.storyboard
+                     instantiateViewControllerWithIdentifier:NSStringFromClass([PlayViewController class])];
+    
+    [[self view] addSubview:[[self playerVC] view]];
+    [self addChildViewController:[self playerVC]];
+    
+}
+
+#pragma mark - Private Methods
 
 - (void) showPlayerView {
     if ([self playerVC] != nil && [self playerState] == PLAYER_STATE_HIDDEN) {
@@ -62,31 +83,85 @@ typedef enum {
     }
 }
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+- (void) drawProgressCircleViewWithAudioPlayer:(AVAudioPlayer *)player
+                                   atIndexPath:(NSIndexPath *)indexPath {
     
-    [sPlayManagerMusic addDelegate:self];
-    _nowIndex = NSNotFound;
-    self.playerState = PLAYER_STATE_HIDDEN;
-    self.playerVC = [self.storyboard
-                     instantiateViewControllerWithIdentifier:NSStringFromClass([PlayViewController class])];
+    [self resetTimer];
     
-    [[self view] addSubview:[[self playerVC] view]];
-    [self addChildViewController:[self playerVC]];
+    UITableViewCell *cell = [self.tblSong cellForRowAtIndexPath:indexPath];
+    _progressView = [cell.contentView viewWithTag:PROGRESS_VIEW_TAG];
+    _player = player;
     
-    listSong = [[NSArray alloc] initWithArray:[sLibraryAPI getListMusic]];
+    _timer = [NSTimer scheduledTimerWithTimeInterval:0.5
+                                              target:self
+                                            selector:@selector(drawCircleTimer:)
+                                            userInfo:nil
+                                             repeats:YES];
     
+}
+
+- (void) drawCircleTimer:(NSTimer *)timer {
+    
+    [self removeSubLayer:_progressView];
+    float percentTime = _player.currentTime / _player.duration;
+    [self drawArcCircleForTime:_progressView andPercentTime:percentTime];
+}
+
+- (void) removeSubLayer:(UIView *)view {
+    for (CAShapeLayer *layer in view.layer.sublayers) {
+        [layer removeFromSuperlayer];
+    }
+}
+
+- (void)drawArcCircleForTime:(UIView *)viewTime
+              andPercentTime:(float)percentTime {
+    
+    CGPoint center = CGPointMake(viewTime.frame.size.width/2, viewTime.frame.size.height/2);
+    
+    CAShapeLayer *circle = [CAShapeLayer layer];
+    
+    circle.path = [[self createCircle:center
+                           withRadius:20
+                          withPercent:percentTime] CGPath];
+    
+    circle.fillColor = [[UIColor orangeColor] CGColor];
+    circle.strokeColor = [[UIColor blackColor] CGColor];
+    circle.lineWidth = 1.0;
+    
+    [viewTime.layer addSublayer:circle];
+    
+}
+
+- (UIBezierPath *)createCircle:(CGPoint)center
+                      withRadius:(CGFloat)radius
+                     withPercent:(CGFloat)percent {
+    
+    UIBezierPath *path = [UIBezierPath bezierPathWithArcCenter:center
+                                                        radius:radius
+                                                    startAngle: -M_PI / 2
+                                                      endAngle: ((M_PI * 2.0) * percent) - M_PI / 2
+                                                     clockwise:YES];
+    
+    [path addLineToPoint:center];
+    [path closePath];
+    return path;
+    
+}
+
+- (void) resetTimer {
+    [_timer invalidate];
+    _timer = nil;
 }
 
 #pragma mark - TableView Delegate
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [self resetTimer];
     [self showPlayerView];
     if ([tableView isEqual:self.tblSong]) {
-        [sPlayManagerMusic playSongAtIndex:indexPath.row];
-//        [self drawAtIndex:[indexPath row]];
+        NSInteger indexOfSong = [indexPath row];
+        [sPlayManagerMusic playSongAtIndex:indexOfSong];
     }
 }
 
@@ -97,7 +172,7 @@ typedef enum {
 {
     if ([tableView isEqual:self.tblSong]) {
         if (section == 0) {
-            return [listSong count];
+            return [_listSong count];
         }
     }
     
@@ -115,15 +190,6 @@ typedef enum {
                                           reuseIdentifier:cellSong];
         }
         
-        UILabel *labelName = [cell.contentView viewWithTag:LABEL_NAME_TAG];
-        labelName.text = [[listSong objectAtIndex:indexPath.row] getName];
-        
-        UILabel *labelArtist = [cell.contentView viewWithTag:LABEL_ARTIST_TAG];
-        labelArtist.text = [[listSong objectAtIndex:indexPath.row] getArtist];
-        
-        UILabel *labelDuration = [cell.contentView viewWithTag:LABEL_DURATION_TAG];
-        labelDuration.text = [[listSong objectAtIndex:indexPath.row] getDurationString];
-        
         return cell;
     }
     
@@ -133,6 +199,52 @@ typedef enum {
 - (void)tableView:(UITableView *)tableView
   willDisplayCell:(UITableViewCell *)cell
 forRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    Song *song = [_listSong objectAtIndex:[indexPath row]];
+
+    UILabel *labelName = [cell.contentView viewWithTag:LABEL_NAME_TAG];
+    labelName.text = [[_listSong objectAtIndex:[indexPath row]] getName];
+    
+    UILabel *labelArtist = [cell.contentView viewWithTag:LABEL_ARTIST_TAG];
+    labelArtist.text = [[_listSong objectAtIndex:[indexPath row]] getArtist];
+    
+    UILabel *labelDuration = [cell.contentView viewWithTag:LABEL_DURATION_TAG];
+    
+    UIView *progressView = [cell.contentView viewWithTag:PROGRESS_VIEW_TAG];
+    
+    if ([song isPlaying]) {
+        
+        /** For Cell Playing **/
+        
+        [labelDuration setText:@""];
+        [progressView setHidden:NO];
+        
+    } else {
+        
+        /** For Cell Not Playing **/
+        
+        NSString *durationString = [[_listSong objectAtIndex:[indexPath row]] getDurationString];
+        [labelDuration setText:durationString];
+        [progressView setHidden:YES];
+        
+    }
+    
+}
+
+- (void)        tableView:(UITableView *)tableView
+didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+//    UITableViewCell *cell = [self.tblSong cellForRowAtIndexPath:indexPath];
+//    
+//    UILabel *labelDuration = [cell.contentView viewWithTag:LABEL_DURATION_TAG];
+//    
+//    Song *song = [_listSong objectAtIndex:[indexPath row]];
+//    
+//    if (![song isPlaying]) {
+//        labelDuration.text = [song getDurationString];
+//    } else {
+//        return;
+//    }
     
 }
 
@@ -144,18 +256,19 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 
 - (void) audioPlayerWillPlaying:(AVAudioPlayer *)player
                     andSongInfo:(Song *)song
+              withPreviousIndex:(NSInteger)prevIndex
                         atIndex:(NSInteger)index {
     
-//    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
-//    UITableViewCell *cell = [self.tblSong cellForRowAtIndexPath:indexPath];
-//    UILabel *nameLabel = [cell.contentView viewWithTag:LABEL_NAME_TAG];
-//    NSLog(@"%@", nameLabel.text);
-//    UIView *progressView = [cell.contentView viewWithTag:PROGRESS_VIEW_TAG];
-//
-//    [progressView setHidden:YES];
-//    [self.tblSong reloadRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath, nil]
-//                        withRowAnimation:UITableViewRowAnimationNone];
-
+    NSIndexPath *previousPath = [NSIndexPath indexPathForRow:prevIndex
+                                                   inSection:0];
+    
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index
+                                                inSection:0];
+    
+    [self.tblSong reloadRowsAtIndexPaths:@[previousPath, indexPath]
+                        withRowAnimation:UITableViewRowAnimationNone];
+    
+    [self drawProgressCircleViewWithAudioPlayer:player atIndexPath:indexPath];
     
 }
 

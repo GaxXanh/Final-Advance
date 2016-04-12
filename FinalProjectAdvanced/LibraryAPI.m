@@ -65,8 +65,6 @@
     
     NSArray *arraySong = [NSArray arrayWithArray:listSong];
     
-    [sPlayManagerMusic setListSong:arraySong];
-    
     return [NSArray arrayWithArray:arraySong];
 }
 

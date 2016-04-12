@@ -10,8 +10,8 @@
 
 @interface PlayManagerMusic () <AVAudioPlayerDelegate> {
     NSArray<Song *> *_listSong;
-    dispatch_queue_t _dispatchQueue;
-    NSInteger _index;
+    NSInteger _nowIndex;
+    NSInteger _previousIndex;
 }
 
 @property (copy, nonatomic) NSArray *delegates;
@@ -36,8 +36,8 @@
 {
     self = [super init];
     if (self) {
-        _dispatchQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-        _index = NSNotFound;
+        _nowIndex = -1;
+        _previousIndex = -1;
         self.delegates = @[];
     }
     
@@ -50,78 +50,129 @@
     [self setDelegates:delegatesCopy];
 }
 
-- (void) setListSong:(NSArray<Song *> *)listSong {
+- (NSArray<Song *> *) reloadListSong {
     if (self) {
-        _listSong = listSong;
+        _listSong = [sLibraryAPI getListMusic];
     }
-}
-
-- (void) setPlayViewController:(PlayViewController *)playViewController {
-    if (self) {
-        _playViewController = playViewController;
-    }
-}
-
-- (void) playSongAtIndex:(NSInteger)index
-{
     
-    if ([_listSong count] >= index) {
-        _index = index;
-        dispatch_suspend(_dispatchQueue);
-        dispatch_resume(_dispatchQueue);
-        dispatch_async(_dispatchQueue, ^{
-            Song *currentSong = [_listSong objectAtIndex:index];
+    return _listSong;
+}
+
+- (void) playSongAtIndex:(NSInteger)index {
+    
+    if (_nowIndex != -1) {
+        _previousIndex = _nowIndex;
+        _nowIndex = index;
+        
+        // Alway set isPlaying property of previousIndex to NO, then will reload with protocol
+        [self restorePreviousSong];
+        
+    } else {
+        _nowIndex = index;
+    }
+    
+    [self play];
+    
+}
+
+- (void) restorePreviousSong {
+    
+    [[_listSong objectAtIndex:_previousIndex] setIsPlaying:NO];
+    
+}
+
+
+
+- (void) play {
+    
+    Song *nowPlayingSong = [_listSong objectAtIndex:_nowIndex];
+    
+    NSString *filePath = [nowPlayingSong getFilePath];
+    NSData *fileData = [NSData dataWithContentsOfFile:filePath];
+    NSError *error = nil;
+    
+    _audioPlayer = [[AVAudioPlayer alloc] initWithData:fileData
+                                                 error:&error];
+    _audioPlayer.delegate = self;
+    
+    if (_audioPlayer != nil) {
+        
+        if ([_audioPlayer prepareToPlay]) {
             
-            NSString *filePath = [currentSong getFilePath];
-            NSData *fileData = [NSData dataWithContentsOfFile:filePath];
-            NSError *error = nil;
+            // Success prepare
             
-            _audioPlayer = [[AVAudioPlayer alloc] initWithData:fileData error:&error];
+            [self updateNowPlayingInfo];
+            
+            [nowPlayingSong setIsPlaying:YES];
+            
             _audioPlayer.delegate = self;
             
-            if (_audioPlayer != nil) {
-                
-                for (id <PlayManagerMusicDelegate> delegate in self.delegates) {
-                    if ([delegate respondsToSelector:@selector(audioPlayerWillPlaying:andSongInfo:atIndex:)]) {
-                        [delegate audioPlayerWillPlaying:self.audioPlayer andSongInfo:[_listSong objectAtIndex:index] atIndex:_index];
-                    }
+            for (id <PlayManagerMusicDelegate> delegate in self.delegates) {
+                if ([delegate respondsToSelector:@selector(audioPlayerWillPlaying:andSongInfo:withPreviousIndex:atIndex:)]) {
+                    [delegate audioPlayerWillPlaying:self.audioPlayer
+                                         andSongInfo:nowPlayingSong
+                                   withPreviousIndex:_previousIndex
+                                             atIndex:_nowIndex];
                 }
-                if ([_audioPlayer prepareToPlay] && [_audioPlayer play]) {
-                    // Success
-                } else {
-                    // Failed
-                }
-                
-            } else {
-                // Failed to instantiate AVAudioPlayer
             }
             
-        });
-    }
-}
-
-- (void) next
-{
-    if ([_listSong count] > _index) {
-        _index++;
-        [self playSongAtIndex:_index];
+            if ([_audioPlayer play]) {
+                // Success play
+            } else {
+                // Failed to play
+            }
+        }
+        
     } else {
-        _index = 0;
-        [self playSongAtIndex:_index];
+        NSLog(@"Failed: %@", error);
     }
+
 }
 
-- (void) previous
-{
-    if (index > 0) {
-        _index--;
-        [self playSongAtIndex:_index];
-    } else {
-        _index = [_listSong count];
-        [self playSongAtIndex:_index];
+- (void) next {
+    
+    if ([_listSong count] - 1 > _nowIndex) {
+        
+        _previousIndex = _nowIndex;
+        
+        _nowIndex++;
+        
+        [self restorePreviousSong];
     }
+    
+    [self play];
 }
 
+- (void) previous {
+    if (_nowIndex > 0) {
+        
+        _previousIndex = _nowIndex;
+        
+        _nowIndex--;
+        
+        [self restorePreviousSong];
+    }
+    
+    [self play];
+}
+
+#pragma mark - Playing Center
+
+- (void) updateNowPlayingInfo {
+    
+    Song *nowPlayingSong = [_listSong objectAtIndex:_nowIndex];
+    
+    NSMutableDictionary *albumInfo = [[NSMutableDictionary alloc] init];
+    albumInfo[MPMediaItemPropertyTitle] = [nowPlayingSong getName];
+    albumInfo[MPMediaItemPropertyArtist] = [nowPlayingSong getArtist];
+    albumInfo[MPMediaItemPropertyAlbumTitle] = [nowPlayingSong getAlbumName];
+    albumInfo[MPMediaItemPropertyPlaybackDuration] = [NSNumber numberWithDouble:[[self audioPlayer] duration]];
+    albumInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = [NSNumber numberWithDouble:[[self audioPlayer] currentTime]];
+    MPMediaItemArtwork *songArtwork = [[MPMediaItemArtwork alloc] initWithImage:[nowPlayingSong getArtwork]];
+    albumInfo[MPMediaItemPropertyArtwork] = songArtwork;
+    [[MPNowPlayingInfoCenter defaultCenter] setNowPlayingInfo:albumInfo];
+    
+}
 
 #pragma mark - <AVAudioPlayerDelegate>
 
@@ -129,7 +180,8 @@
     
     for (id <PlayManagerMusicDelegate> delegate in self.delegates) {
         if ([delegate respondsToSelector:@selector(audioPlayerDidFinishPlaying:withIndex:)]) {
-            [delegate audioPlayerDidFinishPlaying:[self audioPlayer] withIndex:_index];
+            [delegate audioPlayerDidFinishPlaying:[self audioPlayer]
+                                        withIndex:_nowIndex];
         }
     }
     

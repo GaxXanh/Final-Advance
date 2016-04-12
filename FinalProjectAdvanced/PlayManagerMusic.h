@@ -17,7 +17,7 @@
 /* audioPlayerDidFinishPlaying:successfully: is called when a sound has finished playing. */
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player withIndex:(NSInteger)index;
 /* audioPlayerWillPlaing: is called when a sound will playing */
-- (void)audioPlayerWillPlaying:(AVAudioPlayer *)player andSongInfo:(Song *)song atIndex:(NSInteger)index;
+- (void)audioPlayerWillPlaying:(AVAudioPlayer *)player andSongInfo:(Song *)song withPreviousIndex:(NSInteger)prevIndex atIndex:(NSInteger)index;
 
 @end
 
@@ -28,9 +28,12 @@
 - (AVAudioPlayer *) audioPlayer;
 - (void) addDelegate:(id<PlayManagerMusicDelegate>)delegate;
 - (void) setPlayViewController:(PlayViewController *)playViewController;
-- (void) setListSong:(NSArray<Song *> *)listSong;
+- (NSArray<Song *> *) reloadListSong;
 - (void) playSongAtIndex:(NSInteger)index;
 - (void) next;
 - (void) previous;
+- (void) play;
+
+- (void) updateNowPlayingInfo;
 
 @end

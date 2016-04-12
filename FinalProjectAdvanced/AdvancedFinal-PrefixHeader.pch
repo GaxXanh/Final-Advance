@@ -15,5 +15,7 @@
 #import "Song.h"
 #import "PlayManagerMusic.h"
 #import <UIKit/UIKit.h>
+#import <MediaPlayer/MediaPlayer.h>
+#include "TargetConditionals.h"
 
 #endif /* AdvancedFinal_PrefixHeader_pch */

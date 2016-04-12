@@ -16,7 +16,9 @@
     NSString *_filePath;
     NSString *_artist;
     NSString *_durationInString;
+    NSString *_albumName;
     BOOL _isPlaying;
+    UIImage *_artwork;
 }
 
 @end
@@ -36,13 +38,36 @@
                                              options:nil];
         for (NSString *format in [asset availableMetadataFormats]) {
             for (AVMetadataItem *item in [asset metadataForFormat:format]) {
+                
+                NSLog(@"%@", (NSString *) [item commonKey]);
+                
                 if ([[item commonKey] isEqualToString:@"title"]) {
                     _name = (NSString *) [item value];
                 }
                 if ([[item commonKey] isEqualToString:@"artist"]) {
                     _artist = (NSString *) [item value];
                 }
+                
+                if ([[item commonKey] isEqualToString:@"albumName"]) {
+                    _albumName = (NSString *) [item value];
+                }
+                
+                if ([[item commonKey] isEqualToString:@"artwork"]) {
+                    
+                    if ([item.keySpace isEqualToString:AVMetadataKeySpaceID3]) {
+                        _artwork = [UIImage imageWithData:[item.value copyWithZone:nil]];
+                    }
+                    
+                    else if ([item.keySpace isEqualToString:AVMetadataKeySpaceiTunes]) {
+                        _artwork = [UIImage imageWithData:[item.value copyWithZone:nil]];
+                    }
+                    
+                }
             }
+        }
+        
+        if (_artwork == nil) {
+            _artwork = [UIImage imageNamed:@"default-artwork.jpg"];
         }
         
         if (_name == nil) {
@@ -53,14 +78,25 @@
             _name = @"...";
         }
         
+        if ([_albumName isEqualToString:@""]) {
+            _albumName = @"...";
+        }
+        
         _duration = CMTimeGetSeconds([asset duration]);
         NSInteger minutes = (NSInteger)(CMTimeGetSeconds(asset.duration))/60;
         NSInteger seconds = (NSInteger)CMTimeGetSeconds(asset.duration) - (minutes * 60);
         
         _durationInString = [NSString stringWithFormat:@"%ld:%02ld",(long)minutes,(long)seconds];
+        
+        _isPlaying = NO;
     }
     
     return self;
+}
+
+- (UIImage *)getArtwork
+{
+    return _artwork;
 }
 
 - (NSString *)getName
@@ -81,6 +117,23 @@
 - (NSString *)getArtist
 {
     return _artist;
+}
+
+- (NSString *)getAlbumName
+{
+    return _albumName;
+}
+
+- (void)setIsPlaying:(BOOL)isPlaying
+{
+    if (self) {
+        _isPlaying = isPlaying;
+    }
+}
+
+- (BOOL)isPlaying
+{
+    return _isPlaying;
 }
 
 @end
