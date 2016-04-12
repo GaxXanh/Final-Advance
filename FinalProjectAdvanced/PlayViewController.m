@@ -111,7 +111,6 @@
         [self.lblNameAudio setText:song.getName];
     });
     
-//    [self.lblNameAudio setText:song.getName];
 }
 
 @end

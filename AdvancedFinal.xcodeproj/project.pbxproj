@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		320D412D1CBD3DE200011204 /* default-artwork.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 320D412C1CBD3DE200011204 /* default-artwork.jpg */; };
 		32BCD83F1CBA1B64001EED9C /* PlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32BCD83E1CBA1B64001EED9C /* PlayViewController.m */; };
 		32DFC7EC1CB75A7800354834 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DFC7EB1CB75A7800354834 /* main.m */; };
 		32DFC7EF1CB75A7800354834 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DFC7EE1CB75A7800354834 /* AppDelegate.m */; };
@@ -20,6 +21,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		320D412C1CBD3DE200011204 /* default-artwork.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "default-artwork.jpg"; sourceTree = "<group>"; };
 		32BCD83D1CBA1B64001EED9C /* PlayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayViewController.h; sourceTree = "<group>"; };
 		32BCD83E1CBA1B64001EED9C /* PlayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayViewController.m; sourceTree = "<group>"; };
 		32DFC7E71CB75A7800354834 /* AdvancedFinal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AdvancedFinal.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -112,6 +114,7 @@
 		32DFC80D1CB76B1C00354834 /* Image */ = {
 			isa = PBXGroup;
 			children = (
+				320D412C1CBD3DE200011204 /* default-artwork.jpg */,
 			);
 			name = Image;
 			sourceTree = "<group>";
@@ -176,6 +179,11 @@
 					32DFC7E61CB75A7800354834 = {
 						CreatedOnToolsVersion = 7.3;
 						DevelopmentTeam = HKXZTH4YA3;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -205,6 +213,7 @@
 				32DFC7FA1CB75A7800354834 /* LaunchScreen.storyboard in Resources */,
 				32DFC7F71CB75A7800354834 /* Assets.xcassets in Resources */,
 				32DFC7F51CB75A7800354834 /* Main.storyboard in Resources */,
+				320D412D1CBD3DE200011204 /* default-artwork.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -335,8 +344,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				INFOPLIST_FILE = FinalProjectAdvanced/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = MusicPlayer;
+				PRODUCT_BUNDLE_IDENTIFIER = MusicPlayerGX;
 				PRODUCT_NAME = AdvancedFinal;
 			};
 			name = Debug;
@@ -347,8 +357,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				INFOPLIST_FILE = FinalProjectAdvanced/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = MusicPlayer;
+				PRODUCT_BUNDLE_IDENTIFIER = MusicPlayerGX;
 				PRODUCT_NAME = AdvancedFinal;
 			};
 			name = Release;
