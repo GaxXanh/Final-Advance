@@ -39,8 +39,6 @@
         for (NSString *format in [asset availableMetadataFormats]) {
             for (AVMetadataItem *item in [asset metadataForFormat:format]) {
                 
-                NSLog(@"%@", (NSString *) [item commonKey]);
-                
                 if ([[item commonKey] isEqualToString:@"title"]) {
                     _name = (NSString *) [item value];
                 }
