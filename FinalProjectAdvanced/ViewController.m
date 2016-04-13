@@ -56,15 +56,18 @@ typedef enum {
 - (void) showPlayerView {
     if ([self playerVC] != nil && [self playerState] == PLAYER_STATE_HIDDEN) {
         
+        UIView *view = [[self playerVC] view];
+        [view setAlpha:0.0f];
+        
         [UIView animateWithDuration:kDurationAnimateGoUp
                               delay:0.1
                             options:UIViewAnimationOptionCurveEaseOut
                          animations:^{
                              
-                             UIView *view = [[self playerVC] view];
                              CGRect r = view.frame;
                              r.origin.y -= 80;
                              [view setFrame:r];
+                             [view setAlpha:1.0f];
                              
                          } completion:^(BOOL finished) {
                              
