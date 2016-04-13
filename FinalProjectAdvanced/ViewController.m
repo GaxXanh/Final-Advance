@@ -124,9 +124,9 @@ typedef enum {
                            withRadius:20
                           withPercent:percentTime] CGPath];
     
-    circle.fillColor = [[UIColor orangeColor] CGColor];
+    circle.fillColor = [[UIColor redColor] CGColor];
     circle.strokeColor = [[UIColor blackColor] CGColor];
-    circle.lineWidth = 1.0;
+    circle.lineWidth = 0.3f;
     
     [viewTime.layer addSublayer:circle];
     
@@ -155,7 +155,8 @@ typedef enum {
 
 #pragma mark - TableView Delegate
 
-- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)      tableView:(UITableView *)tableView
+didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [self resetTimer];
     [self showPlayerView];
@@ -225,26 +226,18 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         
         NSString *durationString = [[_listSong objectAtIndex:[indexPath row]] getDurationString];
         [labelDuration setText:durationString];
+        [labelDuration setAlpha:0.0f];
         [progressView setHidden:YES];
         
+        [UIView animateWithDuration:0.2f
+                              delay:0.0f
+                            options:UIViewAnimationOptionCurveLinear | UIViewAnimationOptionAllowUserInteraction
+                         animations:^{
+                             [labelDuration setAlpha:1.0f];
+                         } completion:^(BOOL finished) {
+                             
+                         }];
     }
-    
-}
-
-- (void)        tableView:(UITableView *)tableView
-didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-//    UITableViewCell *cell = [self.tblSong cellForRowAtIndexPath:indexPath];
-//    
-//    UILabel *labelDuration = [cell.contentView viewWithTag:LABEL_DURATION_TAG];
-//    
-//    Song *song = [_listSong objectAtIndex:[indexPath row]];
-//    
-//    if (![song isPlaying]) {
-//        labelDuration.text = [song getDurationString];
-//    } else {
-//        return;
-//    }
     
 }
 
